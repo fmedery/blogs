@@ -1,0 +1,18 @@
+---
+apiVersion: gloo.solo.io/v1
+kind: UpstreamGroup
+metadata:
+  name: upstreamgroup-blue
+  namespace: appmesh-demo
+spec:
+  destinations:
+  - destination:
+      upstream:
+        name: appmesh-demo-colorteller-blue-9080
+        namespace: gloo-system
+    weight: 50
+  - destination:
+      upstream:
+        name: appmesh-demo-colorteller-bluesteel-9080
+        namespace: gloo-system
+    weight: 50
