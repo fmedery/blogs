@@ -2,18 +2,18 @@
 apiVersion: gloo.solo.io/v1
 kind: UpstreamGroup
 metadata:
-  name: upstreamgroup-blue
-  namespace: appmesh-demo
+  name: upstreamgroup-gateway
+  namespace: gloo-system
 spec:
   destinations:
   - destination:
       upstream:
-        name: appmesh-demo-colorteller-blue-9080
+        name: appmesh-demo-colorgateway-9080
         namespace: gloo-system
     weight: 80
   - destination:
       upstream:
-        name: appmesh-demo-colorteller-bluesteel-9080
+        name: appmesh-demo-colorgatewayv2-v2-9080
         namespace: gloo-system
     weight: 20
 ---
@@ -28,21 +28,11 @@ spec:
     - '*'
     routes:
     - matcher:
-        prefix: /appmesh/blue
-      routeAction:
-        upstreamGroup:
-          name: upstreamgroup-blue
-          namespace: appmesh-demo
-      routePlugins:
-        prefixRewrite:
-          prefixRewrite: /
-    - matcher:
         prefix: /appmesh/color
       routeAction:
-        single:
-          upstream:
-            name: appmesh-demo-colorgateway-9080
-            namespace: gloo-system
+        upstreamGroup:
+          name: upstreamgroup-gateway
+          namespace: gloo-system
       routePlugins:
         prefixRewrite:
           prefixRewrite: /color
