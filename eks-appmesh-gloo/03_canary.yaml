@@ -8,6 +8,6 @@ spec:
   destinations:
   - destination:
       upstream:
-        name: appmesh-demo-colorgatewayv2-v2-9080
+        name: appmesh-demo-colorgatewayv2-9080
         namespace: gloo-system
     weight: 100

@@ -77,21 +77,7 @@ spec:
   serviceDiscovery:
     dns:
       hostName: colorteller-blue.appmesh-demo.svc.cluster.local
----
-apiVersion: appmesh.k8s.aws/v1beta1
-kind: VirtualNode
-metadata:
-  name: colorteller-red
-  namespace: appmesh-demo
-spec:
-  meshName: color-mesh
-  listeners:
-    - portMapping:
-        port: 9080
-        protocol: http
-  serviceDiscovery:
-    dns:
-      hostName: colorteller-red.appmesh-demo.svc.cluster.local
+
 ---
 apiVersion: appmesh.k8s.aws/v1beta1
 kind: VirtualService
@@ -300,10 +286,6 @@ spec:
       containers:
         - name: colorteller
           image: 970805265562.dkr.ecr.us-west-2.amazonaws.com/colorteller:latest
-          resources:
-            requests:
-              cpu: 50m
-              memory: 64Mi
           ports:
             - containerPort: 9080
           env:
@@ -311,51 +293,5 @@ spec:
               value: "9080"
             - name: "COLOR"
               value: "blue"
----
-# red
-apiVersion: v1
-kind: Service
-metadata:
-  name: colorteller-red
-  namespace: appmesh-demo
-  labels:
-    app: colorteller
-    version: red
-spec:
-  ports:
-    - port: 9080
-      name: http
-  selector:
-    app: colorteller
-    version: red
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: colorteller-red
-  namespace: appmesh-demo
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: colorteller
-      version: red
-  template:
-    metadata:
-      labels:
-        app: colorteller
-        version: red
-    spec:
-      containers:
-        - name: colorteller
-          image: 970805265562.dkr.ecr.us-west-2.amazonaws.com/colorteller:latest
-          ports:
-            - containerPort: 9080
-          env:
-            - name: "SERVER_PORT"
-              value: "9080"
-            - name: "COLOR"
-              value: "red"
----
 
 # vim: set ft=yaml:

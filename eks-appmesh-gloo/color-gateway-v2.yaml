@@ -1,4 +1,4 @@
-#mesh
+#app mesh virtual node
 ---
 apiVersion: appmesh.k8s.aws/v1beta1
 kind: VirtualNode
@@ -17,6 +17,8 @@ spec:
   backends:
     - virtualService:
         virtualServiceName: colorteller.appmesh-demo
+
+#app mesh virtualservice
 ---
 apiVersion: appmesh.k8s.aws/v1beta1
 kind: VirtualService
@@ -34,6 +36,7 @@ spec:
           weightedTargets:
             - virtualNodeName: colorgatewayv2
               weight: 1
+
 #service
 ---
 apiVersion: v1
